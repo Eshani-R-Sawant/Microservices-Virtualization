@@ -4,6 +4,8 @@
 ##  Project Overview
 
 This project demonstrates a 3-tier microservice architecture deployed across three **Ubuntu Server 24.04** Virtual Machines on a **VMware Workstation** environment. It simulates a real-world cloud pipeline where services are isolated by a private network.
+<img width="552" height="473" alt="image (3)" src="https://github.com/user-attachments/assets/1a2843ae-4ad8-4624-9b4f-299e57bbb2fa" />
+
 
 ## Architecture
 
@@ -42,6 +44,9 @@ To run the services, navigate to each service folder and execute:
 # In Mood and Data services
 npm install
 node app.js  # or node server.js
+In the VM3 run
+node server.js
+
 
 ```
 
