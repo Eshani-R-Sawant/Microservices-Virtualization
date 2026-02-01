@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood-Based Book Recommender</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #f4f4f9; padding: 50px; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block; }
+        h1 { color: #333; }
+        .button-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        button { padding: 15px; border: none; border-radius: 8px; cursor: pointer; background-color: #5c67f2; color: white; font-weight: bold; transition: 0.3s; }
+        button:hover { background-color: #4a54e1; transform: translateY(-2px); }
+        #result { margin-top: 30px; padding: 20px; border-top: 2px solid #eee; display: none; }
+        .book-title { font-size: 1.5em; color: #5c67f2; display: block; }
+        .book-author { font-style: italic; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>How are you feeling?</h1>
+    <p>Select a mood to get a book recommendation</p>
+    
+    <div class="button-grid">
+        <button onclick="getBook('Happy')">Happy 😊</button>
+        <button onclick="getBook('Sad')">Sad 😢</button>
+        <button onclick="getBook('Adventurous')">Adventurous 🏔️</button>
+        <button onclick="getBook('Mysterious')">Mysterious 🕵️</button>
+        <button onclick="getBook('Romantic')">Romantic ❤️</button>
+        <button onclick="getBook('Stressed')">Stressed 😫</button>
+    </div>
+
+    <div id="result">
+        <strong>We recommend:</strong><br>
+        <span class="book-title" id="bookTitle"></span>
+        <span class="book-author" id="bookAuthor"></span>
+    </div>
+</div>
+
+<script>
+    async function getBook(mood) {
+        const resultDiv = document.getElementById('result');
+        const titleSpan = document.getElementById('bookTitle');
+        const authorSpan = document.getElementById('bookAuthor');
+
+        try {
+            // Pointing to VM2 (Mood Service)
+            const response = await fetch(`http://192.168.59.20:4000/get-book?mood=${mood}`);
+            const data = await response.json();
+
+            if (data.title) {
+                titleSpan.innerText = data.title;
+                authorSpan.innerText = "by " + data.author;
+                resultDiv.style.display = 'block';
+            } else {
+                alert("No books found for this mood!");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Could not connect to the recommendation service.");
+        }
+    }
+</script>
+
+</body>
+</html>
